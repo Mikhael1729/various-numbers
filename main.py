@@ -14,29 +14,7 @@ def compute_divisors(number):
   return divisors
 
 def compute_factors(number):
-  factors = []
-  if number > 1:
-    factors.append(1)
-
-    limit = number // 2 + 1
-    divisor = 2
-
-    while divisor < limit: # Curent divisor hasn't been evaluated. Mientras no se ha terminado de evaluar cada número entre number / 2.
-      quotient = number // divisor
-
-      divisor_is_divisible_by_number = number == divisor * quotient
-      if divisor_is_divisible_by_number:
-        factors.append(divisor)
-
-        quotient_hasnt_been_evaluated = divisor < quotient # At this point quotient is a divisible number candidate
-        if quotient_hasnt_been_evaluated:
-          factors.append(quotient)
-
-        limit = quotient - 1 # Is always divisor + 1
-
-      divisor += 1
-
-  return factors
+  return []
 
 def compute_sum(factors):
   sum = 0
@@ -54,17 +32,19 @@ def compute_factors_sum(number):
 def is_perfect_number(number, factors_sum):
   return True if factors_sum == number else False
 
-def is_friend_number(a, a_factors_sum, b, b_factors_sum):
+def compute_amicability(a, a_factors_sum, b, b_factors_sum):
   return a_factors_sum == b and b_factors_sum == a
 
 def print_friend_numbers_in_range(start, end):
   amicable_numbers = []
   perfect_numbers = []
-  sociable_numbers = []
+  sociable_numbers = {}
+  
 
   serie = list(range(start, end))
   size = len(serie)
 
+  period_size = 3
   for i in range(0, len(size)):
     a = serie[i]
     a_factors_sum = compute_factors_sum(a)# Sum of the factors of a number
@@ -80,19 +60,21 @@ def print_friend_numbers_in_range(start, end):
       b = serie[j]
       b_factors_sum = compute_factors_sum(b) # Sum of the factors of b number
 
-      is_a_friend_number = is_friend_number(a, a_factors_sum, b, b_factors_sum)
-      if is_a_friend_number:
+      are_amicable = compute_amicability(a, a_factors_sum, b, b_factors_sum)
+      if are_amicable:
         amicable_numbers.append(a)
         amicable_numbers.append(b)
-        del serie[i]
-        del serie[j]
-        continue
-      # TODO: Coninue writing the step 6
-      elif:
-
+      elif a_factors_sum == b and b_factors_sum is not a: # It's a candidate number of a sociable secuence of period n = 3
+	if period_size in sociable_numbers:
+	  sociable_numbers[period_size].append(a)
+	  sociable_numbers[period_size].append(b)
+	else:
+	  sociable_numbers[period_size] = []
       
-      
-
+      # TODO: Check where the following instructions are not true for the rest of cases.
+      del serie[i]
+      del serie[j]
+      continue
 
 """
 - Amicable numbers
